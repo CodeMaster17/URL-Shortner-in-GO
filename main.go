@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -48,6 +50,17 @@ func getURL(id string) (URL, error) {
 	return url, nil
 }
 
-func main() {
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
 
+func main() {
+	// Handler for the root URL
+
+	fmt.Println("Starting the server at port 8080")
+	http.HandleFunc("/", handler)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Error starting the server")
+	}
 }
