@@ -78,12 +78,23 @@ func shortURLHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func redirectURLHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Path[len("/redirect/"):]
+	url, err := getURL(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	http.Redirect(w, r, url.OriginalURL, http.StatusFound)
+}
+
 func main() {
 	// Handler for the root URL
 
 	fmt.Println("Starting the server at port 8080")
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/shorten", shortURLHandler)
+	http.HandleFunc("/redirect/", redirectURLHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("Error starting the server")
