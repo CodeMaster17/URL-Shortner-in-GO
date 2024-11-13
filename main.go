@@ -27,7 +27,18 @@ func generateShortURL(OriginalURL string) string {
 	return hash[:8]                   // returns the first 8 characters of the hash value
 }
 
+func creatURL(OriginalURL string) string {
+	shortURL := generateShortURL(OriginalURL)
+	id := shortURL // id to be stored in db
+	UrlDB[id] = URL{
+		ID:           id,
+		OriginalURL:  OriginalURL,
+		ShortURL:     shortURL,
+		CreationDate: time.Now(),
+	}
+	return shortURL
+}
 
-func main(){
-	
+func main() {
+
 }
