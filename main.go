@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"time"
 )
 
@@ -37,6 +38,14 @@ func creatURL(OriginalURL string) string {
 		CreationDate: time.Now(),
 	}
 	return shortURL
+}
+
+func getURL(id string) (URL, error) {
+	url, ok := UrlDB[id]
+	if !ok {
+		return URL{}, errors.New("URL not found")
+	}
+	return url, nil
 }
 
 func main() {
